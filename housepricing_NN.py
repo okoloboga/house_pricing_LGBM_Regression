@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -17,18 +11,10 @@ y = pd.read_csv('train.csv')
 
 df.head(5)
 
-
-# In[2]:
-
-
 # Sort by nulls in columns
 
 pd.set_option('display.max_rows', df.shape[0])
 pd.DataFrame(df.isnull().sum().sort_values(ascending = False))
-
-
-# In[3]:
-
 
 # Delete columns with a lot of nulls (over50%)
 
@@ -42,18 +28,10 @@ for i in a:
     
 df.head(10)
 
-
-# In[4]:
-
-
 # Extract SalePrice feature as target array
 
 y = df['SalePrice']
 del df['SalePrice']
-
-
-# In[5]:
-
 
 # Transfom objects in coloumns to int64
 
@@ -65,10 +43,6 @@ for i in df.columns:
     
 df.head(10)
 
-
-# In[6]:
-
-
 # Convert all to [0 - 1]
 
 y = (y - min(y)) / max(y) 
@@ -79,10 +53,6 @@ for i in df.columns:
     df[i] = (df[i] - b) / a
     
 df.head(10)
-
-
-# In[68]:
-
 
 # Train/test splitting
 
@@ -101,10 +71,6 @@ model.compile(optimizer="adam",
              loss="mean_squared_error",
              metrics=["mae"])    
 
-
-# In[69]:
-
-
 history = model.fit(x_train,
                     y_train,
                     epochs = 150,
@@ -113,10 +79,6 @@ history = model.fit(x_train,
 
 history_dict = history.history
 history_dict.keys()
-
-
-# In[70]:
-
 
 # Visualization of training process, epoch/loss
 
@@ -145,29 +107,17 @@ plt.ylabel("Accuracy")
 plt.legend()
 plt.show()
 
-
-# In[71]:
-
-
 # Prediction and accuracy
 
 pred = model.predict(x_test)
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print(f"test_acc: {test_acc}")
 
-
-# In[72]:
-
-
 # Prediction and acc. on all data
 
 pred_0 = model.predict(df)
 test_loss, test_acc = model.evaluate(df, y)
 print(f"test_acc: {test_acc}")
-
-
-# In[75]:
-
 
 # Prediction on specific example
 
@@ -176,4 +126,3 @@ y_0 = a['SalePrice']
 
 pred_1 = (pred_0 * max(y_0)) + min(y_0)
 abs(1 - (pred_1[1337] / y_0[1337]))
-
